@@ -34,7 +34,6 @@ margin-top:10px;
 `
 const Tela=styled.div`
 flex-direction:column;
-background:gray;
 height:calc(100% - 60px);
 width:100%;
 align-items:center;

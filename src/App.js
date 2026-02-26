@@ -5,6 +5,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import Livros from './Livros';
 import Menu from './Menu';
+import Pedidos from './Pedidos';
+import Inicial from './Inicial';
 
 function App() {
   return (
@@ -12,7 +14,9 @@ function App() {
           <Tela>
             <Menu/>
               <Routes>
-                <Route path='/' element={<Livros/>}/>
+                <Route path='/' element={<Inicial/>}/>
+                <Route path='/livros' element={<Livros/>}/>
+                <Route path='/pedidos' element={<Pedidos/>}/>
               </Routes>
           </Tela>
         </BrowserRouter>
@@ -20,7 +24,7 @@ function App() {
 }
 
 const Tela=styled.div`
-background:gray;
+background:#4c4747;
 height:100vh;
 width:100vw;
 display:flex;
