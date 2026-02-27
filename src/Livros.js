@@ -1,14 +1,23 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
-import { getLivros } from "./api"
+import { getLivros, postPedido } from "./api"
 import { Oval } from 'react-loader-spinner';
 import CriacaoLivro from "./CriacaoLivro";
 import { useNavigate } from "react-router-dom";
+import MyContext from "./context";
 export default function Livros(){
+    const {usuario}=useContext(MyContext)
     const navigate=useNavigate()
     const [livros,setLivros]=useState([])
     const [erro,setErro]=useState('')
     const [loading,setLoading]=useState(false)
+    function comprar(livroId){
+        postPedido(usuario._id,livroId).then(res=>{
+            navigate('/pedidos')
+        }).catch(err=>{
+            setErro('Servidor fora do ar')
+        })
+    }
     function buscarLivros(){
         setLoading(true)
         getLivros().then(res=>{
@@ -21,21 +30,33 @@ export default function Livros(){
         })
     }
     useEffect(buscarLivros,[])
+    
     return(
         <Tela>
             {loading?<Oval height={100} width={100} color="#ffffff" wrapperStyle={{marginTop:'20px'}}visible={true} ariaLabel="oval-loading"/>:<></>}
             {erro?<h6>{erro}</h6>:<></>}
-            <Botao onClick={()=>navigate('/livros/criar')}>Novo Item</Botao>
+            <Botao onClick={()=>navigate('/livros/criar')}>Novo Livro</Botao>
             {livros.map(livro=><Livro>
                 <p>{livro.titulo}</p>
-                <p>{livro.autor}</p>
                 <p>{livro.tema}</p>
                 <p>{livro.paginas}</p>
                 <p>{livro.preco.toFixed(2)}</p>
+                <p>{livro.estoque}</p>
+                <Comprar onClick={()=>{comprar(livro._id)}}>
+                    Comprar
+                </Comprar>
             </Livro>)}
         </Tela>
     )
 }
+const Comprar=styled.div`
+background:green;cursor:pointer;
+position:absolute;color:white;
+top:10px;right:10px;
+border-radius:10px;
+padding:10px;
+p{margin:0;}
+`
 const Botao=styled.div`
 display:flex;cursor:pointer;
 align-items:center;
@@ -49,6 +70,7 @@ color:white;
 position:sticky;top:10px;
 `
 const Livro=styled.div`
+position:relative;
 flex-direction:column;
 background:white;
 border-radius:10px;

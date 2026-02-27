@@ -6,7 +6,7 @@ export default function Menu(){
     const {pathname}=useLocation()
     return(
         <Tela>
-            <Botao atual={pathname=='/'} onClick={()=>navigate('/')}>Usuario</Botao>
+            <Botao atual={pathname=='/'||pathname=='/cadastro'} onClick={()=>navigate('/')}>Usuario</Botao>
             <Botao atual={pathname=='/livros'} onClick={()=>navigate('/livros')}>Livros</Botao>
             <Botao atual={pathname=='/pedidos'} onClick={()=>navigate('/pedidos')}>Pedidos</Botao>
         </Tela>

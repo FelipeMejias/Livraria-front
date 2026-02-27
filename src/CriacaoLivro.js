@@ -17,7 +17,7 @@ export default function CriacaoLivro(){
         postLivros({titulo,paginas,preco,estoque,tema}).then(res=>{
             navigate('/livros')
         }).catch(err=>{
-            
+            console.log(err)
         })
     }
     function escolherTema(novoTema){

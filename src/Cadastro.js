@@ -1,19 +1,17 @@
 import { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
-import { postLogin } from "./api"
+import { postCadastro, postLogin } from "./api"
 import MyContext from "./context"
 import { useNavigate } from "react-router-dom"
 
-export default function Inicial(){
+export default function Cadastro(){
     const navigate=useNavigate()
-    const {setUsuario}=useContext(MyContext)
     const [username,setUsername]=useState('')
     const [senha,setSenha]=useState('')
     
     function login(){
-        postLogin({username,senha}).then(res=>{
-            setUsuario(res.data)
-            navigate('/livros')
+        postCadastro({username,senha}).then(res=>{
+            navigate('/')
         }).catch(err=>{
             console.log(err)
         })
@@ -30,8 +28,8 @@ export default function Inicial(){
             placeholder={`Senha...`}
             onChange={e=>setSenha(e.target.value)}
             />
-            <Botao onClick={login}>Login</Botao>
-            <Botao style={{width:'280px'}} onClick={()=>navigate('/cadastro')}>Não possui cadastro? Cadastre-se</Botao>
+            <Botao onClick={login}>Cadastrar</Botao>
+            <Botao style={{width:'280px'}} onClick={()=>navigate('/')}>Já é cadastrado? Ir para o login</Botao>
         </Tela>
     )
 }
