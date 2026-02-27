@@ -7,6 +7,7 @@ import Livros from './Livros';
 import Menu from './Menu';
 import Pedidos from './Pedidos';
 import Inicial from './Inicial';
+import CriacaoLivro from './CriacaoLivro';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
               <Routes>
                 <Route path='/' element={<Inicial/>}/>
                 <Route path='/livros' element={<Livros/>}/>
+                <Route path='/livros/criar' element={<CriacaoLivro/>}/>
                 <Route path='/pedidos' element={<Pedidos/>}/>
               </Routes>
           </Tela>
