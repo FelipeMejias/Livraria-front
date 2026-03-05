@@ -13,20 +13,26 @@ export const postCadastro = async (usuario) => {
 export const getLivros = async () => {
   return api.get(`/livros`)
 }
-export const postLivros = async (livro) => {
-  return api.post(`/livros`,livro)
+export const postLivros = async (livro,usuario) => {
+  return api.post(`/livros`,livro,{headers: {'admincode': usuario.codigo}})
+}
+export const deleteLivro = async (id,usuario) => {
+  return api.delete(`/livros/${id}`,{headers: {'admincode': usuario.codigo}})
 }
 
 
-export const getPedidos = async () => {
-  return api.get(`/pedidos`)
+export const getPedidos = async (usuario) => {
+  if(usuario.tipo=='Admin'){
+    return api.get(`/pedidos`,{headers: {'admincode': usuario.codigo}})
+  }else{
+    return api.get(`/pedidos/${usuario._id}`)
+  }
 }
 export const postPedido = async (idUsuario,idLivro) => {
-  console.log(idUsuario,idLivro)
   return api.post(`/pedidos/${idUsuario}/${idLivro}`)
 }
-export const putPedido = async (id) => {
-  return api.put(`/pedidos/${id}`)
+export const putPedido = async (id,usuario) => {
+  return api.put(`/pedidos/${id}`,{headers: {'admincode': usuario.codigo}})
 }
 export const deletePedido = async (id) => {
   return api.delete(`/pedidos/${id}`)

@@ -1,14 +1,19 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
 import { deletePedido, getPedidos, putPedido } from "./api"
 import { Oval } from 'react-loader-spinner';
+import MyContext from "./context";
+import { useNavigate } from "react-router-dom";
 export default function Pedidos(){
+    const {usuario}=useContext(MyContext)
+    const navigate=useNavigate()
+    if(!usuario)navigate('/')
     const [pedidos,setPedidos]=useState([])
     const [erro,setErro]=useState('')
     const [loading,setLoading]=useState(false)
     function buscarPedidos(){
         setLoading(true)
-        getPedidos().then(res=>{
+        getPedidos(usuario).then(res=>{
             const {data}=res
             setPedidos(data)
             setLoading(false)
@@ -19,7 +24,7 @@ export default function Pedidos(){
     }
     function alterarPedido(id){
         setLoading(true)
-        putPedido(id).then(res=>{
+        putPedido(id,usuario).then(res=>{
             buscarPedidos()
             setLoading(false)
         }).catch(err=>{
@@ -27,7 +32,7 @@ export default function Pedidos(){
             setLoading(false)
         })
     }
-    function excluirPedido(id){
+    function deletarPedido(id){
         setLoading(true)
         deletePedido(id).then(res=>{
             buscarPedidos()
@@ -43,22 +48,25 @@ export default function Pedidos(){
             {loading?<Oval height={100} width={100} color="#ffffff" wrapperStyle={{marginTop:'20px'}}visible={true} ariaLabel="oval-loading"/>:<></>}
             {erro?<h6>{erro}</h6>:<></>}
             {pedidos.map(pedido=>{
-            const {usuario,livro,status,id}=pedido
+            const {usuario:usuarioDoPedido,livro,status,_id,data}=pedido
             return (
                 <Pedido>
                     <Status cor={
-                        status=='Pago'?'red'
+                        status=='Encomendado'?'red'
                         :status=='Em entrega'?'orange':
                         'green'
                     }
                     ><p>{status}</p></Status>
-                    <p>{usuario.username}</p>
+                    {usuario.tipo=='Admin'?<p>{usuarioDoPedido.username}</p>:<></>}
                     <p>{livro.titulo}</p>
                     <p>{livro.preco.toFixed(2)}</p>
+                    <p>{data}</p>
                     <section>
-                        <Botao onClick={()=>deletePedido(id)}>Excluir</Botao>
-                        {status!='Finalizado'?
-                            <Botao onClick={()=>putPedido(id)}>Alterar status: {status=='Pago'?'Em entrega':'Finalizado'}</Botao>
+                        <Botao onClick={()=>{deletarPedido(_id)}}>Excluir</Botao>
+                        {usuario.tipo=='Admin' &&status!='Finalizado'?
+                        <Botao onClick={()=>alterarPedido(_id)}>
+                            Alterar status para: {status=='Encomendado'?'Em entrega':'Finalizado'}
+                        </Botao>
                         :<></>}
                     </section>
                 </Pedido>
@@ -76,6 +84,7 @@ padding:0 10px 0 10px;
 background:gray;
 border-radius:10px;
 color:white;
+white-space: nowrap
 `
 const Status=styled.div`
 background:${p=>p.cor};
@@ -86,6 +95,7 @@ padding:10px;
 p{margin:0;}
 `
 const Pedido=styled.div`
+max-width:95%;
 position:relative;
 flex-direction:column;
 background:white;
@@ -94,7 +104,7 @@ padding:20px;
 width:450px;
 p{margin:0;}
 margin-top:10px;
-section{display:flex;margin-top:10px}
+section{display:flex;margin-top:10px;}
 `
 const Tela=styled.div`
 flex-direction:column;

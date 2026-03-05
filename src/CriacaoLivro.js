@@ -4,7 +4,9 @@ import { FaAngleDown } from "react-icons/fa";
 import { FaAngleUp } from "react-icons/fa";
 import { postLivros } from "./api";
 import { useNavigate } from "react-router-dom";
+import MyContext from "./context";
 export default function CriacaoLivro(){
+    const {usuario}=useContext(MyContext)
     const navigate=useNavigate()
     const [titulo,setTitulo]=useState('')
     const [paginas,setPaginas]=useState('')
@@ -12,9 +14,10 @@ export default function CriacaoLivro(){
     const [estoque,setEstoque]=useState('')
 
     const [tema,setTema]=useState('Tema')
+    const temas=['Fantasia','Romance','Suspense','Tecnologia','História']
     const [escolhendo,setEscolhendo]=useState(false)
     function criar(){
-        postLivros({titulo,paginas,preco,estoque,tema}).then(res=>{
+        postLivros({titulo,paginas,preco,estoque,tema},usuario.codigo).then(res=>{
             navigate('/livros')
         }).catch(err=>{
             console.log(err)
@@ -33,11 +36,7 @@ export default function CriacaoLivro(){
             {escolhendo?
             <Telona>
                 <article>
-                    <Tema escolher={escolherTema} nome={'Fantasia'}/>
-                    <Tema escolher={escolherTema} nome={'Romance'}/>
-                    <Tema escolher={escolherTema} nome={'Suspense'}/>
-                    <Tema escolher={escolherTema} nome={'Tecnologia'}/>
-                    <Tema escolher={escolherTema} nome={'História'}/>
+                    {temas.map(t=><Tema escolher={escolherTema} nome={t}/>)}
                 </article>
                 <FaAngleUp style={{margin:'5px -5px 0 0'}} onClick={()=>setEscolhendo(false)}  />
             </Telona>:

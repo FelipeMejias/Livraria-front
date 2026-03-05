@@ -8,6 +8,7 @@ import MyContext from "./context";
 export default function Livros(){
     const {usuario}=useContext(MyContext)
     const navigate=useNavigate()
+    if(!usuario)navigate('/')
     const [livros,setLivros]=useState([])
     const [erro,setErro]=useState('')
     const [loading,setLoading]=useState(false)
@@ -35,17 +36,21 @@ export default function Livros(){
         <Tela>
             {loading?<Oval height={100} width={100} color="#ffffff" wrapperStyle={{marginTop:'20px'}}visible={true} ariaLabel="oval-loading"/>:<></>}
             {erro?<h6>{erro}</h6>:<></>}
-            <Botao onClick={()=>navigate('/livros/criar')}>Novo Livro</Botao>
-            {livros.map(livro=><Livro>
+            {usuario.tipo=='Admin'?
+            <Botao onClick={()=>navigate('/livros/criar')}>
+                Novo Livro
+            </Botao>:<></>}
+            {livros.map(livro=>{
+                return <Livro>
                 <p>{livro.titulo}</p>
                 <p>{livro.tema}</p>
-                <p>{livro.paginas}</p>
-                <p>{livro.preco.toFixed(2)}</p>
+                <p>{livro.paginas} páginas</p>
+                <h2>R$ {livro.preco.toFixed(2)}</h2>
                 <p>{livro.estoque}</p>
                 <Comprar onClick={()=>{comprar(livro._id)}}>
                     Comprar
                 </Comprar>
-            </Livro>)}
+            </Livro>})}
         </Tela>
     )
 }
@@ -70,14 +75,20 @@ color:white;
 position:sticky;top:10px;
 `
 const Livro=styled.div`
+max-width:95%;
 position:relative;
 flex-direction:column;
 background:white;
 border-radius:10px;
 padding:20px;
 width:450px;
-p{margin:0;}
-
+p{margin:0px 0 5px 0;}
+h2{
+    margin:0;color:green;
+    font-size:18px;
+    position:absolute;right:15px;
+    bottom:15px;
+    }
 margin-top:10px;
 `
 const Tela=styled.div`

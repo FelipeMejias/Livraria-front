@@ -9,15 +9,19 @@ export default function Inicial(){
     const {setUsuario}=useContext(MyContext)
     const [username,setUsername]=useState('')
     const [senha,setSenha]=useState('')
-    
+    const [erro,setErro]=useState('')
     function login(){
         postLogin({username,senha}).then(res=>{
             setUsuario(res.data)
             navigate('/livros')
         }).catch(err=>{
-            console.log(err)
+            console.log(err.response.data)
+            setErro(err.response.data)
         })
     }
+    useEffect(()=>{
+        setErro('')
+    },[username,senha])
     return(
         <Tela>
             <input
@@ -30,6 +34,7 @@ export default function Inicial(){
             placeholder={`Senha...`}
             onChange={e=>setSenha(e.target.value)}
             />
+            {erro?<h5>{erro}</h5>:<></>}
             <Botao onClick={login}>Login</Botao>
             <Botao style={{width:'280px'}} onClick={()=>navigate('/cadastro')}>Não possui cadastro? Cadastre-se</Botao>
         </Tela>
@@ -46,6 +51,11 @@ input{margin-bottom:10px;
 box-sizing:border-box;width:300px;
 height:40px;border-radius:10px;
 border:0;padding-left:10px;
+}
+h5{
+margin:20px;
+font-size:17px;font-weight:400;
+color:yellow;
 }
 `
 const Botao=styled.div`

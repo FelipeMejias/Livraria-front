@@ -5,17 +5,25 @@ import MyContext from "./context"
 import { useNavigate } from "react-router-dom"
 
 export default function Cadastro(){
+    const {setUsuario}=useContext(MyContext)
     const navigate=useNavigate()
     const [username,setUsername]=useState('')
     const [senha,setSenha]=useState('')
-    
+    const [codigo,setCodigo]=useState('')
+    const [tipo,setTipo]=useState('')
+    const [erro,setErro]=useState('')
     function login(){
-        postCadastro({username,senha}).then(res=>{
+        postCadastro({username,senha,tipo,codigo}).then(res=>{
             navigate('/')
         }).catch(err=>{
+            console.log(err.response.data)
             console.log(err)
+            setErro(err.response.data)
         })
     }
+    useEffect(()=>{
+        setErro('')
+    },[username,codigo])
     return(
         <Tela>
             <input
@@ -28,8 +36,20 @@ export default function Cadastro(){
             placeholder={`Senha...`}
             onChange={e=>setSenha(e.target.value)}
             />
-            <Botao onClick={login}>Cadastrar</Botao>
-            <Botao style={{width:'280px'}} onClick={()=>navigate('/')}>Já é cadastrado? Ir para o login</Botao>
+            <section>
+                <Botao style={{background:tipo=='Usuário'?'#0000a5':'transparent'}} onClick={()=>setTipo('Usuário')}>Usuário</Botao>
+                <Botao style={{background:tipo=='Admin'?'#0000a5':'transparent'}} onClick={()=>setTipo('Admin')}>Admin</Botao>
+            </section>
+            {tipo=='Admin'?<input
+            value={codigo}
+            placeholder={`Código de acesso...`}
+            onChange={e=>setCodigo(e.target.value)}
+            />:<></>}
+            {erro?<h5>{erro}</h5>:<></>}
+            <article>
+                <Botao onClick={login}>Cadastrar</Botao>
+                <Botao style={{width:'280px'}} onClick={()=>navigate('/')}>Já é cadastrado? Ir para o login</Botao>
+            </article>
         </Tela>
     )
 }
@@ -44,6 +64,17 @@ input{margin-bottom:10px;
 box-sizing:border-box;width:300px;
 height:40px;border-radius:10px;
 border:0;padding-left:10px;
+}
+section{display:flex;margin-bottom:20px;}
+article{
+margin-top:30px;display:flex;
+flex-direction:column;
+align-items:center;
+}
+h5{
+margin:20px;
+font-size:17px;font-weight:400;
+color:yellow;
 }
 `
 const Botao=styled.div`
