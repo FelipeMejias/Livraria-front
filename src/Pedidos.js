@@ -61,14 +61,15 @@ export default function Pedidos(){
                     <p>{livro.titulo}</p>
                     <p>{livro.preco.toFixed(2)}</p>
                     <p>{data}</p>
+                    {usuario.tipo=='Admin' ?
                     <section>
                         <Botao onClick={()=>{deletarPedido(_id)}}>Excluir</Botao>
-                        {usuario.tipo=='Admin' &&status!='Finalizado'?
+                        {status!='Finalizado'?
                         <Botao onClick={()=>alterarPedido(_id)}>
                             Alterar status para: {status=='Encomendado'?'Em entrega':'Finalizado'}
                         </Botao>
                         :<></>}
-                    </section>
+                    </section>:<></>}
                 </Pedido>
             )})}
         </Tela>

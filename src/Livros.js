@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
-import { getLivros, postPedido } from "./api"
+import { deleteLivro, getLivros, postPedido } from "./api"
 import { Oval } from 'react-loader-spinner';
 import CriacaoLivro from "./CriacaoLivro";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +15,13 @@ export default function Livros(){
     function comprar(livroId){
         postPedido(usuario._id,livroId).then(res=>{
             navigate('/pedidos')
+        }).catch(err=>{
+            setErro('Servidor fora do ar')
+        })
+    }
+    function excluir(livroId){
+        deleteLivro(livroId,usuario).then(res=>{
+            buscarLivros()
         }).catch(err=>{
             setErro('Servidor fora do ar')
         })
@@ -46,15 +53,18 @@ export default function Livros(){
                 <p>{livro.tema}</p>
                 <p>{livro.paginas} páginas</p>
                 <h2>R$ {livro.preco.toFixed(2)}</h2>
-                <p>{livro.estoque}</p>
-                <Comprar onClick={()=>{comprar(livro._id)}}>
+                {usuario.tipo=='Admin'?
+                <BotaoCanto style={{background:'gray'}} onClick={()=>{excluir(livro._id)}}>
+                    Excluir
+                </BotaoCanto>:
+                <BotaoCanto onClick={()=>{comprar(livro._id)}}>
                     Comprar
-                </Comprar>
+                </BotaoCanto>}
             </Livro>})}
         </Tela>
     )
 }
-const Comprar=styled.div`
+const BotaoCanto=styled.div`
 background:green;cursor:pointer;
 position:absolute;color:white;
 top:10px;right:10px;

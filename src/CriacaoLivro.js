@@ -11,13 +11,12 @@ export default function CriacaoLivro(){
     const [titulo,setTitulo]=useState('')
     const [paginas,setPaginas]=useState('')
     const [preco,setPreco]=useState('')
-    const [estoque,setEstoque]=useState('')
 
     const [tema,setTema]=useState('Tema')
     const temas=['Fantasia','Romance','Suspense','Tecnologia','História']
     const [escolhendo,setEscolhendo]=useState(false)
     function criar(){
-        postLivros({titulo,paginas,preco,estoque,tema},usuario.codigo).then(res=>{
+        postLivros({titulo,paginas,preco,tema},usuario).then(res=>{
             navigate('/livros')
         }).catch(err=>{
             console.log(err)
@@ -32,7 +31,6 @@ export default function CriacaoLivro(){
             <Input nome={'Título'} valor={titulo} mudanca={setTitulo} />
             <Input nome={'Páginas'} valor={paginas} mudanca={setPaginas} />
             <Input nome={'Preço'} valor={preco} mudanca={setPreco} />
-            <Input nome={'Estoque'} valor={estoque} mudanca={setEstoque} />
             {escolhendo?
             <Telona>
                 <article>
@@ -96,7 +94,7 @@ height:calc(100% - 60px);
 width:100%;
 align-items:center;
 h6{margin:0;font-size:18px;color:yellow;}
-section{display:flex;position:absolute;bottom:20px}
+section{display:flex;margin-top:20px;}
 input{margin-bottom:10px;
 box-sizing:border-box;width:300px;
 height:40px;border-radius:10px;

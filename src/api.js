@@ -32,8 +32,8 @@ export const postPedido = async (idUsuario,idLivro) => {
   return api.post(`/pedidos/${idUsuario}/${idLivro}`)
 }
 export const putPedido = async (id,usuario) => {
-  return api.put(`/pedidos/${id}`,{headers: {'admincode': usuario.codigo}})
+  return api.put(`/pedidos/${id}`,{},{headers: {'admincode': usuario.codigo}})
 }
-export const deletePedido = async (id) => {
-  return api.delete(`/pedidos/${id}`)
+export const deletePedido = async (id,usuario) => {
+  return api.delete(`/pedidos/${id}`,{headers: {'admincode': usuario.codigo}})
 }
