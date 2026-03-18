@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom"
 
 export default function Inicial(){
     const navigate=useNavigate()
-    const {setUsuario}=useContext(MyContext)
+    const {setUsuario,usuario}=useContext(MyContext)
     const [username,setUsername]=useState('')
     const [senha,setSenha]=useState('')
     const [erro,setErro]=useState('')
@@ -22,7 +22,13 @@ export default function Inicial(){
     useEffect(()=>{
         setErro('')
     },[username,senha])
+    console.log(usuario)
     return(
+        usuario?
+        <Tela>
+            <h3>{usuario.username}</h3>
+            <Botao style={{background:'brown'}} onClick={()=>setUsuario(false)}>LogOut</Botao>
+        </Tela>:
         <Tela>
             <input
             value={username}
@@ -35,7 +41,7 @@ export default function Inicial(){
             onChange={e=>setSenha(e.target.value)}
             />
             {erro?<h5>{erro}</h5>:<></>}
-            <Botao onClick={login}>Login</Botao>
+            <Botao onClick={login}>LogIn</Botao>
             <Botao style={{width:'280px'}} onClick={()=>navigate('/cadastro')}>Não possui cadastro? Cadastre-se</Botao>
         </Tela>
     )
@@ -56,6 +62,10 @@ h5{
 margin:20px;
 font-size:17px;font-weight:400;
 color:yellow;
+}
+h3{
+font-weight:400;
+color:white;
 }
 `
 const Botao=styled.div`

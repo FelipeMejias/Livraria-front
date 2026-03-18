@@ -5,18 +5,16 @@ import MyContext from "./context"
 import { useNavigate } from "react-router-dom"
 
 export default function Cadastro(){
-    const {setUsuario}=useContext(MyContext)
     const navigate=useNavigate()
     const [username,setUsername]=useState('')
     const [senha,setSenha]=useState('')
     const [codigo,setCodigo]=useState('')
-    const [tipo,setTipo]=useState('')
+    const [tipo,setTipo]=useState('Usuário')
     const [erro,setErro]=useState('')
     function login(){
         postCadastro({username,senha,tipo,codigo}).then(res=>{
             navigate('/')
         }).catch(err=>{
-            console.log(err.response.data)
             console.log(err)
             setErro(err.response.data)
         })

@@ -93,7 +93,7 @@ position:absolute;
 top:10px;right:10px;
 border-radius:10px;
 padding:10px;
-p{margin:0;}
+p{margin:0;color:white;}
 `
 const Pedido=styled.div`
 max-width:95%;

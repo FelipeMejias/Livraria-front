@@ -11,7 +11,7 @@ import MyContext from './context';
 import Cadastro from './Cadastro';
 
 function App() {
-  const [usuario,setUsuario]=useState({})
+  const [usuario,setUsuario]=useState(false)
   const valorContexto={
     usuario,setUsuario
   }

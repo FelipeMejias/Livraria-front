@@ -83,6 +83,7 @@ background:#0000b5;
 border-radius:10px;
 color:white;
 position:sticky;top:10px;
+z-index:5;
 `
 const Livro=styled.div`
 max-width:95%;
