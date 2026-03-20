@@ -1,6 +1,7 @@
 import axios from "axios"
 
-const baseURL='http://localhost:4000'
+//const baseURL='http://localhost:4000'
+const baseURL='https://livraria-back-tc52.onrender.com'
 const api = axios.create({baseURL})
 
 export const postLogin = async (usuario) => {
