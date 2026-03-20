@@ -22,7 +22,6 @@ export default function Inicial(){
     useEffect(()=>{
         setErro('')
     },[username,senha])
-    console.log(usuario)
     return(
         usuario?
         <Tela>

@@ -13,7 +13,9 @@ export default function Livros(){
     const [erro,setErro]=useState('')
     const [loading,setLoading]=useState(false)
     function comprar(livroId){
-        postPedido(usuario._id,livroId).then(res=>{
+        console.log(usuario.id,livroId)
+        postPedido(usuario.id,livroId).then(res=>{
+            
             navigate('/pedidos')
         }).catch(err=>{
             setErro('Servidor fora do ar')
@@ -54,10 +56,10 @@ export default function Livros(){
                 <p>{livro.paginas} páginas</p>
                 <h2>R$ {livro.preco.toFixed(2)}</h2>
                 {usuario.tipo=='Admin'?
-                <BotaoCanto style={{background:'gray'}} onClick={()=>{excluir(livro._id)}}>
+                <BotaoCanto style={{background:'gray'}} onClick={()=>{excluir(livro.id)}}>
                     Excluir
                 </BotaoCanto>:
-                <BotaoCanto onClick={()=>{comprar(livro._id)}}>
+                <BotaoCanto onClick={()=>{comprar(livro.id)}}>
                     Comprar
                 </BotaoCanto>}
             </Livro>})}

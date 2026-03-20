@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
 import { FaAngleDown } from "react-icons/fa";
 import { FaAngleUp } from "react-icons/fa";
@@ -11,7 +11,7 @@ export default function CriacaoLivro(){
     const [titulo,setTitulo]=useState('')
     const [paginas,setPaginas]=useState('')
     const [preco,setPreco]=useState('')
-
+    const [erro,setErro]=useState('')
     const [tema,setTema]=useState('Tema')
     const temas=['Fantasia','Romance','Suspense','Tecnologia','História']
     const [escolhendo,setEscolhendo]=useState(false)
@@ -19,6 +19,7 @@ export default function CriacaoLivro(){
         postLivros({titulo,paginas,preco,tema},usuario).then(res=>{
             navigate('/livros')
         }).catch(err=>{
+            setErro(err.response.data)
             console.log(err)
         })
     }
@@ -26,6 +27,9 @@ export default function CriacaoLivro(){
         setTema(novoTema)
         setEscolhendo(false)
     }
+    useEffect(()=>{
+        setErro('')
+    },[titulo,paginas,preco,tema])
     return (
         <Tela>
             <Input nome={'Título'} valor={titulo} mudanca={setTitulo} />
@@ -50,6 +54,7 @@ export default function CriacaoLivro(){
                     Criar
                 </Botao>
             </section>
+            {erro?<h5>{erro}</h5>:<></>}
         </Tela>
     )
 }
@@ -99,6 +104,11 @@ input{margin-bottom:10px;
 box-sizing:border-box;width:300px;
 height:40px;border-radius:10px;
 border:0;padding-left:10px;
+}
+h5{
+margin:20px;
+font-size:17px;font-weight:400;
+color:yellow;
 }
 `
 const Botao=styled.div`

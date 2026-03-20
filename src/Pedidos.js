@@ -15,6 +15,7 @@ export default function Pedidos(){
         setLoading(true)
         getPedidos(usuario).then(res=>{
             const {data}=res
+            console.log(data)
             setPedidos(data)
             setLoading(false)
         }).catch(err=>{
@@ -48,7 +49,7 @@ export default function Pedidos(){
             {loading?<Oval height={100} width={100} color="#ffffff" wrapperStyle={{marginTop:'20px'}}visible={true} ariaLabel="oval-loading"/>:<></>}
             {erro?<h6>{erro}</h6>:<></>}
             {pedidos.map(pedido=>{
-            const {usuario:usuarioDoPedido,livro,status,_id,data}=pedido
+            const {usuario:usuarioDoPedido,livro,status,id,data}=pedido
             return (
                 <Pedido>
                     <Status cor={
@@ -63,9 +64,9 @@ export default function Pedidos(){
                     <p>{data}</p>
                     {usuario.tipo=='Admin' ?
                     <section>
-                        <Botao onClick={()=>{deletarPedido(_id)}}>Excluir</Botao>
+                        <Botao onClick={()=>{deletarPedido(id)}}>Excluir</Botao>
                         {status!='Finalizado'?
-                        <Botao onClick={()=>alterarPedido(_id)}>
+                        <Botao onClick={()=>alterarPedido(id)}>
                             Alterar status para: {status=='Encomendado'?'Em entrega':'Finalizado'}
                         </Botao>
                         :<></>}
@@ -113,4 +114,5 @@ height:calc(100% - 60px);
 width:100%;
 align-items:center;
 h6{margin:0;font-size:18px;color:yellow;}
+overflow:auto;
 `

@@ -25,7 +25,7 @@ export const getPedidos = async (usuario) => {
   if(usuario.tipo=='Admin'){
     return api.get(`/pedidos`,{headers: {'admincode': usuario.codigo}})
   }else{
-    return api.get(`/pedidos/${usuario._id}`)
+    return api.get(`/pedidos/${usuario.id}`)
   }
 }
 export const postPedido = async (idUsuario,idLivro) => {
