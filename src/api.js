@@ -1,7 +1,9 @@
 import axios from "axios"
+import dotenv from "dotenv";
 
-//const baseURL='http://localhost:4000'
-const baseURL='https://livraria-back-tc52.onrender.com'
+dotenv.config();
+const baseURL=process.env.API_URL;
+
 const api = axios.create({baseURL})
 
 export const postLogin = async (usuario) => {
