@@ -3,20 +3,24 @@ import styled from "styled-components"
 import { postLogin } from "./api"
 import MyContext from "./context"
 import { useNavigate } from "react-router-dom"
-
+import { Oval } from 'react-loader-spinner';
 export default function Inicial(){
     const navigate=useNavigate()
     const {setUsuario,usuario}=useContext(MyContext)
     const [username,setUsername]=useState('')
     const [senha,setSenha]=useState('')
     const [erro,setErro]=useState('')
+    const [loading,setLoading]=useState(false)
     function login(){
+        setLoading(true)
         postLogin({username,senha}).then(res=>{
             setUsuario(res.data)
             navigate('/livros')
+            setLoading(false)
         }).catch(err=>{
             console.log(err.response.data)
             setErro(err.response.data)
+            setLoading(false)
         })
     }
     useEffect(()=>{
@@ -42,6 +46,7 @@ export default function Inicial(){
             {erro?<h5>{erro}</h5>:<></>}
             <Botao onClick={login}>LogIn</Botao>
             <Botao style={{width:'280px'}} onClick={()=>navigate('/cadastro')}>Não possui cadastro? Cadastre-se</Botao>
+            {loading?<Oval height={100} width={100} color="#ffffff" wrapperStyle={{marginTop:'20px'}}visible={true} ariaLabel="oval-loading"/>:<></>}
         </Tela>
     )
 }

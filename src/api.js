@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const baseURL=process.env.REACT_APP_API_URL;
+const baseURL='https://livraria-back-tc52.onrender.com'
 
 const api = axios.create({baseURL})
 

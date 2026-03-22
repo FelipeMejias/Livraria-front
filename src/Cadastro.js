@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { postCadastro, postLogin } from "./api"
 import MyContext from "./context"
 import { useNavigate } from "react-router-dom"
-
+import { Oval } from 'react-loader-spinner';
 export default function Cadastro(){
     const navigate=useNavigate()
     const [username,setUsername]=useState('')
@@ -11,11 +11,15 @@ export default function Cadastro(){
     const [codigo,setCodigo]=useState('')
     const [tipo,setTipo]=useState('Usuário')
     const [erro,setErro]=useState('')
+    const [loading,setLoading]=useState(false)
     function login(){
+        setLoading(true)
         postCadastro({username,senha,tipo,codigo}).then(res=>{
             navigate('/')
+            setLoading(false)
         }).catch(err=>{
             console.log(err)
+            setLoading(false)
             setErro(err.response.data)
         })
     }
@@ -48,6 +52,7 @@ export default function Cadastro(){
                 <Botao onClick={login}>Cadastrar</Botao>
                 <Botao style={{width:'280px'}} onClick={()=>navigate('/')}>Já é cadastrado? Ir para o login</Botao>
             </article>
+            {loading?<Oval height={100} width={100} color="#ffffff" wrapperStyle={{marginTop:'20px'}}visible={true} ariaLabel="oval-loading"/>:<></>}
         </Tela>
     )
 }

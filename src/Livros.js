@@ -13,7 +13,6 @@ export default function Livros(){
     const [erro,setErro]=useState('')
     const [loading,setLoading]=useState(false)
     function comprar(livroId){
-        console.log(usuario.id,livroId)
         postPedido(usuario.id,livroId).then(res=>{
             
             navigate('/pedidos')
