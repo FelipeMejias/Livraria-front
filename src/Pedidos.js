@@ -15,7 +15,6 @@ export default function Pedidos(){
         setLoading(true)
         getPedidos(usuario).then(res=>{
             const {data}=res
-            console.log(data)
             setPedidos(data)
             setLoading(false)
         }).catch(err=>{
