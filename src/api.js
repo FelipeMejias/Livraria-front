@@ -1,8 +1,8 @@
 import axios from "axios"
 
-const baseURL='https://livraria-back-tc52.onrender.com'
+//const baseURL='https://livraria-back-tc52.onrender.com'
 
-//const baseURL='http://localhost:4000'
+const baseURL='http://localhost:4000'
 
 const api = axios.create({baseURL})
 

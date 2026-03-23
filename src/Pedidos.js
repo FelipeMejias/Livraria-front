@@ -32,16 +32,6 @@ export default function Pedidos(){
             setLoading(false)
         })
     }
-    function deletarPedido(id){
-        setLoading(true)
-        deletePedido(id).then(res=>{
-            buscarPedidos()
-            setLoading(false)
-        }).catch(err=>{
-            setErro('Servidor fora do ar')
-            setLoading(false)
-        })
-    }
     useEffect(buscarPedidos,[])
     return(
         <Tela>
@@ -63,7 +53,6 @@ export default function Pedidos(){
                     <p>{data}</p>
                     {usuario.tipo=='Admin' ?
                     <section>
-                        <Botao onClick={()=>{deletarPedido(id)}}>Excluir</Botao>
                         {status!='Finalizado'?
                         <Botao onClick={()=>alterarPedido(id)}>
                             Alterar status para: {status=='Encomendado'?'Em entrega':'Finalizado'}
